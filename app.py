@@ -1,19 +1,14 @@
 #!flask/bin/python
-
-TREX_STL_EXT_PATH = "external_libs"
-
 from flask import Flask, jsonify
 from error_messages import get_error_message
-import imp
+from trex_client.stl.trex_stl_lib.trex_stl_client import STLClient
 
-Trex = imp.load_source('Trex', 'trex_client/stl/trex_stl_lib')
+print STLClient
 
 app = Flask(__name__)
 
 config = {
-    'api_version': 0.1,
-    'debug': True,
-    'port': '8080'
+    'api_version': 0.1
 }
 
 
@@ -56,9 +51,6 @@ def get_status():
     return 1
 
 
-
-
-
 # Not implemented methods
 @app.errorhandler(404)
 def not_implemented(e):
@@ -66,8 +58,3 @@ def not_implemented(e):
         'status': 'error',
         'result': get_error_message('not_implemented')
     })
-
-
-
-# if __name__ == '__main__':
-#     app.run(debug=config['debug'])

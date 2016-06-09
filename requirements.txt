@@ -3,4 +3,5 @@
 
 flask==0.11.1
 requests==2.10.0
-gevent==
+gevent==1.1.1
+dnet==1.12

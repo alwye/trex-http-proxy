@@ -9,3 +9,19 @@ Run the following command to install required packages:
 pip install -r requirements.txt
 ```
 
+## Possible problems
+### dnet library on Mac
+If you see this message:
+
+```
+Could not find a version that satisfies the requirement dnet (from versions: )
+No matching distribution found for dnet
+```
+
+Try this commands:
+
+```
+brew install --with-python libdnet
+pip install pcapy
+pip install scapy
+```
