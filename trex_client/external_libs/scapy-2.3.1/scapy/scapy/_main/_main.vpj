@@ -1,0 +1,83 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/9.1/vpj.dtd">
+<Project
+	Version="9.1"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Includes>
+			<Include Dir="%(INCLUDE)"/>
+		</Includes>
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec CmdLine="make %n.obj"/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make"/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec CmdLine="make /B"/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				RunFromDir="%rw">
+				<Exec CmdLine='tdw "_main.exe"'/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				RunFromDir="%rw">
+				<Exec CmdLine='"_main.exe"'/>
+			</Target>
+			<Target
+				Name="Resource Editor"
+				MenuCaption="Resource Editor"
+				ShowOnMenu="HideIfNoCmdLine"
+				RunFromDir="%rw">
+				<Exec CmdLine="workshop"/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="../../fields.py"/>
+			<F N="../../layers/inet.py"/>
+			<F N="../../layers/inet6.py"/>
+			<F N="../../layers/l2.py"/>
+			<F N="../../packet.py"/>
+			<F N="../../../scapy_test.py"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if"/>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters=""/>
+	</Files>
+</Project>

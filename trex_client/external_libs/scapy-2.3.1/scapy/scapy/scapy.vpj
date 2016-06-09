@@ -1,0 +1,180 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/9.1/vpj.dtd">
+<Project
+	Version="9.1"
+	VendorName="SlickEdit"
+	WorkingDir=".">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="Latest Version">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='"scapy.exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<Files>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl">
+			<F N="../__init__.py"/>
+			<F N="../arch/__init__.py"/>
+			<F N="../arch/windows/__init__.py"/>
+			<F N="../asn1/__init__.py"/>
+			<F N="../contrib/__init__.py"/>
+			<F N="../crypto/__init__.py"/>
+			<F N="../layers/__init__.py"/>
+			<F N="../modules/__init__.py"/>
+			<F N="../tools/__init__.py"/>
+			<F N="../all.py"/>
+			<F N="../layers/all.py"/>
+			<F N="../ansmachine.py"/>
+			<F N="../as_resolvers.py"/>
+			<F N="../asn1/asn1.py"/>
+			<F N="../asn1fields.py"/>
+			<F N="../asn1packet.py"/>
+			<F N="../automaton.py"/>
+			<F N="../autorun.py"/>
+			<F N="../contrib/avs.py"/>
+			<F N="../base_classes.py"/>
+			<F N="../asn1/ber.py"/>
+			<F N="../contrib/bgp.py"/>
+			<F N="../layers/bluetooth.py"/>
+			<F N="../arch/bsd.py"/>
+			<F N="../contrib/carp.py"/>
+			<F N="../contrib/cdp.py"/>
+			<F N="../crypto/cert.py"/>
+			<F N="../contrib/chdlc.py"/>
+			<F N="../tools/check_asdis.py"/>
+			<F N="../config.py"/>
+			<F N="../dadict.py"/>
+			<F N="../data.py"/>
+			<F N="../layers/dhcp.py"/>
+			<F N="../layers/dhcp6.py"/>
+			<F N="../layers/dns.py"/>
+			<F N="../layers/dot11.py"/>
+			<F N="../contrib/dtp.py"/>
+			<F N="../contrib/eigrp.py"/>
+			<F N="../error.py"/>
+			<F N="../contrib/etherip.py"/>
+			<F N="../fields.py"/>
+			<F N="../modules/geoip.py"/>
+			<F N="../layers/gprs.py"/>
+			<F N="../contrib/gsm_um.py"/>
+			<F N="../layers/hsrp.py"/>
+			<F N="../contrib/igmp.py"/>
+			<F N="../contrib/igmpv3.py"/>
+			<F N="../contrib/ikev2.py"/>
+			<F N="../layers/inet.py"/>
+			<F N="../layers/inet6.py"/>
+			<F N="../layers/ipsec.py"/>
+			<F N="../layers/ir.py"/>
+			<F N="../layers/isakmp.py"/>
+			<F N="../layers/l2.py"/>
+			<F N="../layers/l2tp.py"/>
+			<F N="../contrib/ldp.py"/>
+			<F N="../arch/linux.py"/>
+			<F N="../layers/llmnr.py"/>
+			<F N="../main.py"/>
+			<F N="../layers/mgcp.py"/>
+			<F N="../asn1/mib.py"/>
+			<F N="../layers/mobileip.py"/>
+			<F N="../contrib/mpls.py"/>
+			<F N="../layers/netbios.py"/>
+			<F N="../layers/netflow.py"/>
+			<F N="../modules/nmap.py"/>
+			<F N="../layers/ntp.py"/>
+			<F N="../contrib/ospf.py"/>
+			<F N="../modules/p0f.py"/>
+			<F N="../packet.py"/>
+			<F N="../arch/pcapdnet.py"/>
+			<F N="../layers/pflog.py"/>
+			<F N="../pipetool.py"/>
+			<F N="../plist.py"/>
+			<F N="../contrib/ppi.py"/>
+			<F N="../contrib/ppi_cace.py"/>
+			<F N="../contrib/ppi_geotag.py"/>
+			<F N="../layers/ppp.py"/>
+			<F N="../pton_ntop.py"/>
+			<F N="../modules/queso.py"/>
+			<F N="../layers/radius.py"/>
+			<F N="../layers/rip.py"/>
+			<F N="../contrib/ripng.py"/>
+			<F N="../route.py"/>
+			<F N="../route6.py"/>
+			<F N="../contrib/rsvp.py"/>
+			<F N="../layers/rtp.py"/>
+			<F N="../scapypipes.py"/>
+			<F N="../layers/sctp.py"/>
+			<F N="../layers/sebek.py"/>
+			<F N="../sendrecv.py"/>
+			<F N="../contrib/skinny.py"/>
+			<F N="../layers/skinny.py"/>
+			<F N="../layers/smb.py"/>
+			<F N="../layers/snmp.py"/>
+			<F N="../arch/solaris.py"/>
+			<F N="../supersocket.py"/>
+			<F N="../layers/tftp.py"/>
+			<F N="../themes.py"/>
+			<F N="../contrib/ubberlogger.py"/>
+			<F N="../arch/unix.py"/>
+			<F N="../utils.py"/>
+			<F N="../utils6.py"/>
+			<F N="../tools/UTscapy.py"/>
+			<F N="../modules/voip.py"/>
+			<F N="../volatile.py"/>
+			<F N="../contrib/vqp.py"/>
+			<F N="../layers/vrrp.py"/>
+			<F N="../contrib/vtp.py"/>
+			<F N="../contrib/wpa_eapol.py"/>
+			<F N="../layers/x509.py"/>
+		</Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if"/>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"/>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters=""/>
+	</Files>
+</Project>
