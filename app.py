@@ -13,6 +13,15 @@ config = {
 }
 
 
+def responsify(status, result):
+    return jsonify({
+        'output': {
+            'status': status,
+            'result': result
+        }
+    })
+
+
 def start_traffic(threadName, delay):
 
     print threadName, delay
@@ -42,20 +51,14 @@ def start_traffic(threadName, delay):
 @app.route('/')
 @crossdomain(origin='*')
 def index():
-    return jsonify({
-        'status': 'ok',
-        'result': 'ok'
-    })
+    return responsify('ok', 'ok')
 
 
 # Get API version
 @app.route('/api_version', methods=['GET'])
 @crossdomain(origin='*')
 def api_version():
-    return jsonify({
-        'status': 'ok',
-        'result': config['api_version']
-    })
+    return responsify('ok', config['api_version'])
 
 
 # Start generating traffic
@@ -71,11 +74,7 @@ def start_trex(args):
     else:
         stop_trex()
         start_trex(args)
-
-    return jsonify({
-        'status': 'ok',
-        'result': 'start'
-    })
+    return responsify('ok', 'start')
 
 
 # Stop sending traffic
@@ -84,26 +83,17 @@ def start_trex(args):
 def stop_trex():
     config['is_running'] = False
     Trex.stop_client()
-    return jsonify({
-        'status': 'ok',
-        'result': 'stop'
-    })
+    return responsify('ok', 'stop')
 
 
 # Get TRex status
 @app.route('/get_status', methods=['GET'])
 @crossdomain(origin='*')
 def get_status():
-    return jsonify({
-        'status': 'ok',
-        'result': "running" if config['is_running'] else "stopped"
-    })
+    return responsify('ok', "running" if config['is_running'] else "stopped")
 
 
 # Not implemented methods
 @app.errorhandler(404)
 def not_implemented(e):
-    return jsonify({
-        'status': 'error',
-        'result': get_error_message('not_implemented')
-    }), 404
+    return responsify('error', get_error_message('not_implemented')), 404
