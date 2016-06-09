@@ -2,26 +2,16 @@
 ## Overview
 This HTTP Proxy allows you to integrate TRex traffic generator (https://trex-tgn.cisco.com) into HTTP environment. For example, it is convenient way to manage the TRex instance via web interface.
 
-## Prerequisites
-Run the following command to install required packages:
+## Requirements
+You need to have Python 2.7 supported.
+
+Run the following command to install required [PyPi](https://pypi.python.org/pypi) packages:
 
 ```
 pip install -r requirements.txt
 ```
 
 ## Possible problems
-### dnet library on Mac
-If you see this message:
+### Trex on Mac
+Trex will not run correctly on Mac. Try using provided [virtual machine on Fedora](https://trex-tgn.cisco.com/trex/doc/trex_vm_manual.html).
 
-```
-Could not find a version that satisfies the requirement dnet (from versions: )
-No matching distribution found for dnet
-```
-
-Try this commands:
-
-```
-brew install --with-python libdnet
-pip install pcapy
-pip install scapy
-```

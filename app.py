@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from error_messages import get_error_message
 import t_rex_stateless as Trex
 import thread
+from cors_decorator import crossdomain
 
 app = Flask(__name__)
 
@@ -36,17 +37,20 @@ def start_traffic(threadName, delay):
 
     return 0
 
+
 # Check server status
 @app.route('/')
+@crossdomain(origin='*')
 def index():
     return jsonify({
         'status': 'ok',
-        'result': ''
+        'result': 'ok'
     })
 
 
 # Get API version
 @app.route('/api_version', methods=['GET'])
+@crossdomain(origin='*')
 def api_version():
     return jsonify({
         'status': 'ok',
@@ -56,19 +60,27 @@ def api_version():
 
 # Start generating traffic
 @app.route('/start', methods=['POST'])
-def start_trex():
+@crossdomain(origin='*')
+def start_trex(args):
+
+    print
 
     if not config['is_running']:
         config['is_running']= True
         thread.start_new_thread(start_traffic, ("Thread-1", 2,))
+    else:
+        stop_trex()
+        start_trex(args)
+
     return jsonify({
         'status': 'ok',
-        'result': 'running'
+        'result': 'start'
     })
 
 
 # Stop sending traffic
 @app.route('/stop', methods=['POST'])
+@crossdomain(origin='*')
 def stop_trex():
     config['is_running'] = False
     Trex.stop_client()
@@ -80,6 +92,7 @@ def stop_trex():
 
 # Get TRex status
 @app.route('/get_status', methods=['GET'])
+@crossdomain(origin='*')
 def get_status():
     return jsonify({
         'status': 'ok',
@@ -93,4 +106,4 @@ def not_implemented(e):
     return jsonify({
         'status': 'error',
         'result': get_error_message('not_implemented')
-    })
+    }), 404

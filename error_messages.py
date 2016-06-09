@@ -7,5 +7,6 @@ error = {
 }
 
 
+# Get an error details by its code
 def get_error_message(code):
     return error[code]
