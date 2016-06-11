@@ -1,5 +1,5 @@
 #!flask/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from error_messages import get_error_message
 import t_rex_stateless as Trex
 import thread
@@ -22,13 +22,11 @@ def responsify(status, result):
     })
 
 
-def start_traffic(threadName, delay):
-
-    print threadName, delay
+def start_traffic(pps):
 
     traffic_config = {
         'duration': 20,
-        'rate': '10000pps',
+        'rate': pps + 'pps',
         'warmup_time': 0,
         'async_start': False
     }
@@ -61,20 +59,39 @@ def api_version():
     return responsify('ok', config['api_version'])
 
 
+@app.route('/test', methods=['POST'])
+@crossdomain(origin='*')
+def http_test():
+    if request.is_json:
+        print request.get_json()
+        return responsify('ok', 'test')
+    return responsify('error', get_error_message('not_json'))
+
+
 # Start generating traffic
 @app.route('/start', methods=['POST'])
 @crossdomain(origin='*')
-def start_trex(args):
+def start_trex():
+    req_data = request.get_json
 
-    print
+    if req_data is not None:
+        try:
+            pps = req_data['traffic_config']['pps']
+            if not config['is_running']:
+                config['is_running'] = True
+                try:
+                    thread.start_new_thread(start_traffic, pps)
+                except:
+                    return responsify('error', get_error_message('trex_not_start'))
+            else:
+                stop_trex()
+                start_trex()
+            return responsify('ok', 'start')
 
-    if not config['is_running']:
-        config['is_running']= True
-        thread.start_new_thread(start_traffic, ("Thread-1", 2,))
-    else:
-        stop_trex()
-        start_trex(args)
-    return responsify('ok', 'start')
+        except AttributeError:
+            return responsify('error', get_error_message('not_json'))
+
+    return responsify('error', get_error_message('not_json'))
 
 
 # Stop sending traffic
