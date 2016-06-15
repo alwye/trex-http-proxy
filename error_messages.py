@@ -19,6 +19,11 @@ error = {
         'err_description': 'TRex could not start to generate traffic.',
         'err_resolution': 'Check with developer team.'
     },
+    'ascii_error': {
+        'err_code': 'ascii_error',
+        'err_description': 'TRex supports ASCII characters only.',
+        'err_resolution': 'Please verify input data and make sure it contains ASCII-compatible symbols only.'
+    }
 }
 
 

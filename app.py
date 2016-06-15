@@ -25,11 +25,9 @@ def responsify(status, result):
 
 def start_traffic(pps):
 
-    rate = pps.encode("ascii") + "pps"
-
     traffic_config = {
         'duration': 20,
-        'rate':  rate,
+        'rate':  pps + "pps",
         'warmup_time': 0,
         'async_start': False
     }
@@ -79,12 +77,12 @@ def start_trex():
         req_data = request.get_json(cache=False)
         if req_data is not None:
             try:
-                pps = req_data['input']['traffic_config']['pps']
+                pps = req_data['input']['traffic_config']['pps'].encode("ascii")
                 if not config['is_running']:
                     try:
                         config['is_running'] = True
                         thread.start_new_thread(start_traffic, (pps,))
-                    except:
+                    except Exception:
                         config['is_running'] = False
                         return responsify('error', get_error_message('trex_not_start'))
                 else:
@@ -94,6 +92,8 @@ def start_trex():
 
             except (AttributeError, KeyError):
                 return responsify('error', get_error_message('not_json'))
+            except ValueError:
+                return responsify('error', get_error_message('ascii_error'))
         else:
             return responsify('error', get_error_message('not_json'))
     else:
