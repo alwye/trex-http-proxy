@@ -4,6 +4,7 @@ from error_messages import get_error_message
 import t_rex_stateless as Trex
 import thread
 from cors_decorator import crossdomain
+import pprint
 
 app = Flask(__name__)
 
@@ -24,9 +25,11 @@ def responsify(status, result):
 
 def start_traffic(pps):
 
+    rate = pps.encode("ascii") + "pps"
+
     traffic_config = {
         'duration': 20,
-        'rate': pps + 'pps',
+        'rate':  rate,
         'warmup_time': 0,
         'async_start': False
     }
@@ -76,12 +79,13 @@ def start_trex():
         req_data = request.get_json(cache=False)
         if req_data is not None:
             try:
-                pps = req_data['traffic_config']['pps']
+                pps = req_data['input']['traffic_config']['pps']
                 if not config['is_running']:
-                    config['is_running'] = True
                     try:
-                        thread.start_new_thread(start_traffic, pps)
+                        config['is_running'] = True
+                        thread.start_new_thread(start_traffic, (pps,))
                     except:
+                        config['is_running'] = False
                         return responsify('error', get_error_message('trex_not_start'))
                 else:
                     stop_trex()
