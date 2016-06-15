@@ -4,7 +4,6 @@ from error_messages import get_error_message
 import t_rex_stateless as Trex
 import thread
 from cors_decorator import crossdomain
-import pprint
 
 app = Flask(__name__)
 
@@ -77,7 +76,6 @@ def start_trex():
         req_data = request.get_json(cache=False)
         if req_data is not None:
             try:
-                pprint.pprint(req_data)
                 pps = req_data['traffic_config']['pps']
                 if not config['is_running']:
                     config['is_running'] = True
