@@ -4,6 +4,7 @@ from error_messages import get_error_message
 import t_rex_stateless as Trex
 import thread
 from cors_decorator import crossdomain
+import pprint
 
 app = Flask(__name__)
 
@@ -72,26 +73,29 @@ def http_test():
 @app.route('/start', methods=['POST'])
 @crossdomain(origin='*')
 def start_trex():
-    req_data = request.get_json
+    if request.is_json:
+        req_data = request.get_json(cache=False)
+        if req_data is not None:
+            try:
+                pprint.pprint(req_data)
+                pps = req_data['traffic_config']['pps']
+                if not config['is_running']:
+                    config['is_running'] = True
+                    try:
+                        thread.start_new_thread(start_traffic, pps)
+                    except:
+                        return responsify('error', get_error_message('trex_not_start'))
+                else:
+                    stop_trex()
+                    start_trex()
+                return responsify('ok', 'start')
 
-    if req_data is not None:
-        try:
-            pps = req_data['traffic_config']['pps']
-            if not config['is_running']:
-                config['is_running'] = True
-                try:
-                    thread.start_new_thread(start_traffic, pps)
-                except:
-                    return responsify('error', get_error_message('trex_not_start'))
-            else:
-                stop_trex()
-                start_trex()
-            return responsify('ok', 'start')
-
-        except AttributeError:
+            except (AttributeError, KeyError):
+                return responsify('error', get_error_message('not_json'))
+        else:
             return responsify('error', get_error_message('not_json'))
-
-    return responsify('error', get_error_message('not_json'))
+    else:
+        return responsify('error', get_error_message('not_json'))
 
 
 # Stop sending traffic
