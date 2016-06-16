@@ -60,7 +60,7 @@ client = STLClient()
 def create_stream(mac_dest, src_n, port_n=0):
     # create a base packet and pad it to size
     size = 60  # no FCS
-    base_pkt = Ether(mac_dest) / IP(src="16.0.0.1", dst="48.0.0.1") / UDP(dport=12, sport=1025)
+    base_pkt = Ether(dst=mac_dest) / IP(src="16.0.0.1", dst="48.0.0.1") / UDP(dport=12, sport=1025)
     pad = max(0, size - len(base_pkt)) * 'x'
 
     min_mac_value = (src_n * port_n) + 1

@@ -8,6 +8,7 @@ You need to have Python 2.7 supported.
 Run the following command to install required [PyPi](https://pypi.python.org/pypi) packages:
 
 ```
+apt-get install python-dev
 pip install -r requirements.txt
 ```
 
