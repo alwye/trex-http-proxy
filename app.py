@@ -23,22 +23,34 @@ def responsify(status, result):
     })
 
 
-def start_traffic(pps):
+def start_traffic(traffic_config):
 
-    traffic_config = {
-        'duration': 20,
-        'rate':  pps + "pps",
+    rate = traffic_config['pps'] + "pps"
+
+    default_traffic_config = {
+        'duration': -1,
         'warmup_time': 0,
         'async_start': False
     }
 
-    traffic_options = {'p1_src_start_ip': '10.10.10.2', 'p2_src_start_ip': '20.20.20.2', 'p2_dst_start_ip': '10.10.10.2',
-     'p2_src_end_ip': '20.20.20.254', 'p1_src_end_ip': '10.10.10.254', 'p1_dst_start_ip': '20.20.20.2'}
+    traffic_options = {
+        'p1_src_start_ip': '10.10.10.2',
+        'p2_src_start_ip': '20.20.20.2',
+        'p2_dst_start_ip': '10.10.10.2',
+        'p2_src_end_ip': '20.20.20.254',
+        'p1_src_end_ip': '10.10.10.254',
+        'p1_dst_start_ip': '20.20.20.2'
+    }
 
-    pkt_a, pkt_b = Trex.create_packets(traffic_options, 1500)
+    pkt_a, pkt_b = Trex.create_packets(traffic_options, traffic_config['mac_dest'], 1500)
 
     Trex.simple_burst(
-        pkt_a, pkt_b, traffic_config['duration'], traffic_config['rate'], traffic_config['warmup_time'], traffic_config['async_start']
+        pkt_a=pkt_a,
+        pkt_b=pkt_b,
+        rate=rate,
+        duration=default_traffic_config['duration'],
+        warmup_time=default_traffic_config['warmup_time'],
+        async_start=default_traffic_config['async_start']
     )
 
     config['is_running'] = False
@@ -60,15 +72,6 @@ def api_version():
     return responsify('ok', config['api_version'])
 
 
-@app.route('/test', methods=['POST'])
-@crossdomain(origin='*')
-def http_test():
-    if request.is_json:
-        print request.get_json()
-        return responsify('ok', 'test')
-    return responsify('error', get_error_message('not_json'))
-
-
 # Start generating traffic
 @app.route('/start', methods=['POST'])
 @crossdomain(origin='*')
@@ -77,12 +80,16 @@ def start_trex():
         req_data = request.get_json(cache=False)
         if req_data is not None:
             try:
-                pps = req_data['input']['traffic_config']['pps'].encode("ascii")
+                traffic_config = {
+                    "pps": req_data['input']['pps'].encode("ascii"),
+                    "src_n": req_data['input']['src_n'].encode("ascii"),
+                    "mac_dest": req_data['input']['mac_dest'].encode("ascii")
+                }
                 if not config['is_running']:
                     try:
                         config['is_running'] = True
-                        thread.start_new_thread(start_traffic, (pps,))
-                    except Exception:
+                        thread.start_new_thread(start_traffic, (traffic_config,))
+                    except:
                         config['is_running'] = False
                         return responsify('error', get_error_message('trex_not_start'))
                 else:
@@ -113,6 +120,7 @@ def stop_trex():
 @app.route('/get_status', methods=['GET'])
 @crossdomain(origin='*')
 def get_status():
+    print Trex.is_connected()
     return responsify('ok', "running" if config['is_running'] else "stopped")
 
 

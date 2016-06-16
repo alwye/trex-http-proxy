@@ -102,7 +102,7 @@ def get_start_end_ipv6(start_ip, end_ip):
     return base_p1, max_p1
 
 
-def create_packets(traffic_options, frame_size=64):
+def create_packets(traffic_options, mac_dest, frame_size=64):
     """Create two IP packets to be used in stream.
 
     :param traffic_options: Parameters for packets.
@@ -126,8 +126,8 @@ def create_packets(traffic_options, frame_size=64):
     p2_src_end_ip = traffic_options['p2_src_end_ip']
     p2_dst_start_ip = traffic_options['p2_dst_start_ip']
 
-    base_pkt_a = Ether()/IP(src=p1_src_start_ip, dst=p1_dst_start_ip, proto=61)
-    base_pkt_b = Ether()/IP(src=p2_src_start_ip, dst=p2_dst_start_ip, proto=61)
+    base_pkt_a = Ether(mac_dest)/IP(src=p1_src_start_ip, dst=p1_dst_start_ip, proto=61)
+    base_pkt_b = Ether(mac_dest)/IP(src=p2_src_start_ip, dst=p2_dst_start_ip, proto=61)
 
     # The following code applies raw instructions to packet (IP src increment).
     # It splits the generated traffic by "ip_src" variable to cores and fix
@@ -218,6 +218,10 @@ def create_packets_v6(traffic_options, frame_size=78):
     return(pkt_a, pkt_b)
 
 
+def is_running():
+    return client.is_connected()
+
+
 def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
 
 
@@ -272,7 +276,7 @@ def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
         if warmup_time > 0:
             client.clear_stats()
             client.start(ports=[0, 1], mult=rate, duration=warmup_time)
-            client.wait_on_traffic(ports=[0, 1], timeout=(warmup_time+30))
+            client.wait_on_traffic(ports=[0, 1])
             stats = client.get_stats()
             print stats
             print "#####warmup statistics#####"
@@ -297,7 +301,7 @@ def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
 
         if not async_start:
             # block until done
-            client.wait_on_traffic(ports=[0, 1], timeout=(duration+30))
+            client.wait_on_traffic(ports=[0, 1], timeout=-1)
 
             # read the stats after the test
             stats = client.get_stats()

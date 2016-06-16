@@ -2135,6 +2135,7 @@ class STLClient(object):
 
     @__api_check(True)
     def wait_on_traffic (self, ports = None, timeout = 60, rx_delay_ms = 10):
+        print timeout
         """
             Block until traffic on specified port(s) has ended
 
@@ -2143,7 +2144,7 @@ class STLClient(object):
                     Ports on which to execute the command
 
                 timeout : int
-                    timeout in seconds
+                    timeout in seconds (-1 for infinite loop)
 
                 rx_delay_ms : int
                     time to wait until RX filters are removed
@@ -2161,8 +2162,6 @@ class STLClient(object):
 
         ports = ports if ports is not None else self.get_acquired_ports()
         ports = self._validate_port_list(ports)
-
-
         expr = time.time() + timeout
 
         # wait while any of the required ports are active
@@ -2173,7 +2172,7 @@ class STLClient(object):
                 raise STLError("subscriber thread is dead")
 
             time.sleep(0.01)
-            if time.time() > expr:
+            if time.time() > expr and timeout != -1:
                 raise STLTimeoutError(timeout)
 
         # remove any RX filters
