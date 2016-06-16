@@ -218,8 +218,17 @@ def create_packets_v6(traffic_options, frame_size=78):
     return(pkt_a, pkt_b)
 
 
+# Returns True if traffic generator was launched, otherwise False
 def is_running():
     return client.is_connected()
+
+
+# Get traffic generation session's details
+def get_stats():
+    if is_running():
+        return client.get_stats()
+    else:
+        return {}
 
 
 def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):

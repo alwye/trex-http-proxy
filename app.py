@@ -115,7 +115,12 @@ def stop_trex():
 @crossdomain(origin='*')
 def get_status():
     status = Trex.is_running()
-    return responsify('ok', "running" if status else "stopped")
+    stats = Trex.get_stats()
+
+    return responsify('ok', {
+        "status": "running" if status else "stopped",
+        "stats": stats
+    })
 
 
 # Not implemented methods
