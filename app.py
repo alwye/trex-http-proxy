@@ -1,7 +1,8 @@
 #!flask/bin/python
 from flask import Flask, jsonify, request
 from error_messages import get_error_message
-import t_rex_stateless as Trex
+# import t_rex_stateless as Trex
+import trex_api as Trex
 import thread
 from cors_decorator import crossdomain
 import pprint
@@ -24,32 +25,16 @@ def responsify(status, result):
 
 def start_traffic(traffic_config):
 
-    rate = traffic_config['pps'] + "pps"
-
     default_traffic_config = {
-        'duration': -1,
-        'warmup_time': 0,
-        'async_start': False
+        'duration': -1,  # -1 for infinity
     }
 
-    traffic_options = {
-        'p1_src_start_ip': '10.10.10.2',
-        'p2_src_start_ip': '20.20.20.2',
-        'p2_dst_start_ip': '10.10.10.2',
-        'p2_src_end_ip': '20.20.20.254',
-        'p1_src_end_ip': '10.10.10.254',
-        'p1_dst_start_ip': '20.20.20.2'
-    }
-
-    pkt_a, pkt_b = Trex.create_packets(traffic_options, traffic_config['mac_dest'], traffic_config['src_n'], 1500)
-
-    Trex.simple_burst(
-        pkt_a=pkt_a,
-        pkt_b=pkt_b,
-        rate=rate,
+    Trex.start_traffic(
         duration=default_traffic_config['duration'],
-        warmup_time=default_traffic_config['warmup_time'],
-        async_start=default_traffic_config['async_start']
+        pkts_n=traffic_config['pkts_n'],
+        pps=traffic_config['pps'],
+        mac_dest=traffic_config['mac_dest'],
+        src_n=traffic_config['src_n']
     )
 
     return 0
@@ -78,8 +63,9 @@ def start_trex():
         if req_data is not None:
             try:
                 traffic_config = {
-                    "pps": req_data['input']['pps'].encode("ascii"),
-                    "src_n": req_data['input']['src_n'].encode("ascii"),
+                    "pps": int(req_data['input']['pps'].encode("ascii")),
+                    "src_n": int(req_data['input']['src_n'].encode("ascii")),
+                    "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
                     "mac_dest": req_data['input']['mac_dest'].encode("ascii")
                 }
                 if not Trex.is_running():
@@ -106,7 +92,7 @@ def start_trex():
 @app.route('/stop', methods=['POST'])
 @crossdomain(origin='*')
 def stop_trex():
-    Trex.stop_client()
+    Trex.stop_traffic()
     return responsify('ok', 'stop')
 
 

@@ -134,7 +134,7 @@ def create_packets(traffic_options, mac_dest, src_n, frame_size=64):
     # IPv4 header checksum.
     vm1 = STLScVmRaw([STLVmFlowVar(name="mac_src",
                                  min_value=1,
-                                 max_value=10,
+                                 max_value=src_n,
                                  size=1,
                                  op="inc"),
                     STLVmWrFlowVar(fv_name="mac_src",
@@ -146,7 +146,7 @@ def create_packets(traffic_options, mac_dest, src_n, frame_size=64):
     # IPv4 header checksum.
     vm2 = STLScVmRaw([STLVmFlowVar(name="mac_src",
                                  min_value=1,
-                                 max_value=10,
+                                 max_value=src_n,
                                  size=1,
                                  op="inc"),
                     STLVmWrFlowVar(fv_name="mac_src",
@@ -234,17 +234,13 @@ def get_stats():
         return {}
 
 
-def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
-
-
-    print "pkt_a=",pkt_a, " pkt_b=",pkt_b, " duration=",duration, " rate=", rate, " warmup_time=", warmup_time, "async_start=", async_start
-
+def simple_burst(pkt_a, pkt_b, duration, pps, warmup_time, async_start):
     """Run the traffic with specific parameters.
 
     :param pkt_a: Base packet for stream 1.
     :param pkt_b: Base packet for stream 2.
     :param duration: Duration of traffic run in seconds (-1=infinite).
-    :param rate: Rate of traffic run [percentage, pps, bps].
+    :param pps: Rate of traffic run [percentage, pps, bps].
     :param warmup_time: Warm up duration.
     :async_start: Start the traffic and exit
     :type pkt_a: STLPktBuilder
@@ -255,6 +251,8 @@ def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
     :type async_start: bool
     :return: nothing
     """
+
+    rate = pps + "pps"
 
     total_rcvd = 0
     total_sent = 0
