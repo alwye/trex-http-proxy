@@ -41,7 +41,7 @@ def start_traffic(traffic_config):
         'p1_dst_start_ip': '20.20.20.2'
     }
 
-    pkt_a, pkt_b = Trex.create_packets(traffic_options, traffic_config['mac_dest'], 1500)
+    pkt_a, pkt_b = Trex.create_packets(traffic_options, traffic_config['mac_dest'], traffic_config['src_n'], 1500)
 
     Trex.simple_burst(
         pkt_a=pkt_a,

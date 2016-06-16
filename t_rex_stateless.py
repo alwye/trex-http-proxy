@@ -102,7 +102,7 @@ def get_start_end_ipv6(start_ip, end_ip):
     return base_p1, max_p1
 
 
-def create_packets(traffic_options, mac_dest, frame_size=64):
+def create_packets(traffic_options, mac_dest, src_n, frame_size=64):
     """Create two IP packets to be used in stream.
 
     :param traffic_options: Parameters for packets.
@@ -132,30 +132,33 @@ def create_packets(traffic_options, mac_dest, frame_size=64):
     # The following code applies raw instructions to packet (IP src increment).
     # It splits the generated traffic by "ip_src" variable to cores and fix
     # IPv4 header checksum.
-    vm1 = STLScVmRaw([STLVmFlowVar(name="src",
-                                   min_value=p1_src_start_ip,
-                                   max_value=p1_src_end_ip,
-                                   size=4, op="inc"),
-                      STLVmWrFlowVar(fv_name="src", pkt_offset="IP.src"),
-                      STLVmFixIpv4(offset="IP"),
-                     ], split_by_field="src")
+    vm1 = STLScVmRaw([STLVmFlowVar(name="mac_src",
+                                 min_value=1,
+                                 max_value=10,
+                                 size=1,
+                                 op="inc"),
+                    STLVmWrFlowVar(fv_name="mac_src",
+                                   pkt_offset=11)   # write it to LSB of SRC
+                    ])
+
     # The following code applies raw instructions to packet (IP src increment).
     # It splits the generated traffic by "ip_src" variable to cores and fix
     # IPv4 header checksum.
-    vm2 = STLScVmRaw([STLVmFlowVar(name="src",
-                                   min_value=p2_src_start_ip,
-                                   max_value=p2_src_end_ip,
-                                   size=4, op="inc"),
-                      STLVmWrFlowVar(fv_name="src", pkt_offset="IP.src"),
-                      STLVmFixIpv4(offset="IP"),
-                     ], split_by_field="src")
+    vm2 = STLScVmRaw([STLVmFlowVar(name="mac_src",
+                                 min_value=1,
+                                 max_value=10,
+                                 size=1,
+                                 op="inc"),
+                    STLVmWrFlowVar(fv_name="mac_src",
+                                   pkt_offset=11)   # write it to LSB of SRC
+                    ])
 
     pkt_a = STLPktBuilder(pkt=base_pkt_a/generate_payload(
         fsize_no_fcs-len(base_pkt_a)), vm=vm1)
     pkt_b = STLPktBuilder(pkt=base_pkt_b/generate_payload(
         fsize_no_fcs-len(base_pkt_b)), vm=vm2)
 
-    return(pkt_a, pkt_b)
+    return pkt_a, pkt_b
 
 
 def create_packets_v6(traffic_options, frame_size=78):
