@@ -11,6 +11,22 @@ Run the following command to install required [PyPi](https://pypi.python.org/pyp
 pip install -r requirements.txt
 ```
 
+## Get it running
+
+cd to TRex's scripts folder and run the interactive console like this:
+
+```
+sudo ./t-rex-64 -i
+```
+
+Once your Python meets the requirements you'll be able to run the proxy with this commands:
+ 
+```
+python start_server.py
+```
+
+To examine API, look into the [Postman](https://www.getpostman.com) collection: **Postman-APIs.postman_collection**.
+
 ## Possible problems
 ### Trex on Mac
 Trex will not run correctly on Mac. Try using provided [virtual machine on Fedora](https://trex-tgn.cisco.com/trex/doc/trex_vm_manual.html).
