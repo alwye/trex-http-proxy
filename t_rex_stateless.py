@@ -333,7 +333,9 @@ def simple_burst(pkt_a, pkt_b, duration, rate, warmup_time, async_start):
 
 
 def stop_client():
-    client.disconnect(stop_traffic=True, release_ports=True)
+    # graceful stop
+    if client.is_connected():
+        client.stop(client.get_active_ports())
 
 
 def print_error(msg):

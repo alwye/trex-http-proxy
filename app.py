@@ -10,7 +10,6 @@ app = Flask(__name__)
 
 config = {
     'api_version': 0.1,
-    'is_running': False
 }
 
 
@@ -53,8 +52,6 @@ def start_traffic(traffic_config):
         async_start=default_traffic_config['async_start']
     )
 
-    config['is_running'] = False
-
     return 0
 
 
@@ -85,12 +82,10 @@ def start_trex():
                     "src_n": req_data['input']['src_n'].encode("ascii"),
                     "mac_dest": req_data['input']['mac_dest'].encode("ascii")
                 }
-                if not config['is_running']:
+                if not Trex.is_running():
                     try:
-                        config['is_running'] = True
                         thread.start_new_thread(start_traffic, (traffic_config,))
                     except:
-                        config['is_running'] = False
                         return responsify('error', get_error_message('trex_not_start'))
                 else:
                     stop_trex()
@@ -111,17 +106,16 @@ def start_trex():
 @app.route('/stop', methods=['POST'])
 @crossdomain(origin='*')
 def stop_trex():
-    config['is_running'] = False
     Trex.stop_client()
     return responsify('ok', 'stop')
 
 
-# Get TRex status
+# Get TRex traffic status
 @app.route('/get_status', methods=['GET'])
 @crossdomain(origin='*')
 def get_status():
-    print Trex.is_connected()
-    return responsify('ok', "running" if config['is_running'] else "stopped")
+    status = Trex.is_running()
+    return responsify('ok', "running" if status else "stopped")
 
 
 # Not implemented methods
