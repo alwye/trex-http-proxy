@@ -1,7 +1,7 @@
 import sys
 import os
 from gevent.wsgi import WSGIServer
-import app
+from app import app
 
 server_config = {
     'port': 5000
@@ -11,7 +11,7 @@ server_config = {
 # Web server function
 def main():
     print 'Starting TRex HTTP proxy on port: ', server_config['port']
-    http_server = WSGIServer(('', 5000), app.app)
+    http_server = WSGIServer(('', 5000), app)
     http_server.serve_forever()
 
 
