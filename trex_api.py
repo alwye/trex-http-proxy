@@ -60,7 +60,9 @@ client = STLClient()
 def create_stream(mac_dest, src_n, port_n=0):
     # create a base packet and pad it to size
     size = 60  # no FCS
-    base_pkt = Ether(dst=mac_dest) / IP(src="16.0.0.1", dst="48.0.0.1") / UDP(dport=12, sport=1025)
+
+    mac_src = "00:00:dd:dd:ae:11"
+    base_pkt = Ether(dst=mac_dest, src=mac_src)/IP(src="10.195.115.232", dst="10.195.115.234")/UDP(dport=12,sport=1025)
     pad = max(0, size - len(base_pkt)) * 'x'
 
     min_mac_value = (src_n * port_n) + 1
@@ -69,8 +71,8 @@ def create_stream(mac_dest, src_n, port_n=0):
     print min_mac_value, max_mac_value
 
     vm = STLScVmRaw(
-        [STLVmFlowVar(name="mac_src", min_value=min_mac_value, max_value=max_mac_value, size=4, op="inc"),
-         STLVmWrFlowVar(fv_name="mac_src", pkt_offset=11)  # write it to LSB of SRC
+        [STLVmFlowVar(name="mac_src", min_value=min_mac_value, max_value=max_mac_value, size=2, op="inc"),
+         STLVmWrFlowVar(fv_name="mac_src", pkt_offset=10)  # write it to LSB of SRC
          ]
         )
 
