@@ -23,6 +23,11 @@ error = {
         'err_code': 'ascii_error',
         'err_description': 'TRex supports ASCII characters only.',
         'err_resolution': 'Please verify input data and make sure it contains ASCII-compatible symbols only.'
+    },
+    'trex_already_running': {
+        'err_code': 'trex_already_running',
+        'err_description': 'TRex is running already.',
+        'err_resolution': 'Stop traffic, then try to start it again.'
     }
 }
 

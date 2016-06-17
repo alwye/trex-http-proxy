@@ -73,10 +73,9 @@ def start_trex():
                         thread.start_new_thread(start_traffic, (traffic_config,))
                     except:
                         return responsify('error', get_error_message('trex_not_start'))
+                    return responsify('ok', 'start')
                 else:
-                    stop_trex()
-                    start_trex()
-                return responsify('ok', 'start')
+                    return responsify('error', get_error_message('trex_already_running'))
 
             except (AttributeError, KeyError):
                 return responsify('error', get_error_message('not_json'))
