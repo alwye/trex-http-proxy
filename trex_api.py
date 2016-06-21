@@ -127,10 +127,6 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n):
 
         # clear the stats before injecting
         client.clear_stats()
-        total_rcvd = 0
-        total_sent = 0
-        lost_a = 0
-        lost_b = 0
 
         # choose rate and start traffic
         client.start(ports=port_list, mult=rate, duration=duration)
