@@ -41,22 +41,22 @@ def start_traffic(traffic_config):
 
 
 # Check server status
-@app.route('/')
-@crossdomain(origin='*')
+@app.route('/', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*', methods=['GET', 'OPTIONS'])
 def index():
     return responsify('ok', 'ok')
 
 
 # Get API version
-@app.route('/api_version', methods=['GET'])
-@crossdomain(origin='*')
+@app.route('/api_version', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*', methods=['GET', 'OPTIONS'])
 def api_version():
     return responsify('ok', config['api_version'])
 
 
 # Start generating traffic
-@app.route('/start', methods=['POST'])
-@crossdomain(origin='*')
+@app.route('/start', methods=['POST', 'OPTIONS'])
+@crossdomain(origin='*', methods=['GET', 'OPTIONS'])
 def start_trex():
     if request.is_json:
         req_data = request.get_json(cache=False)
@@ -88,16 +88,16 @@ def start_trex():
 
 
 # Stop sending traffic
-@app.route('/stop', methods=['POST'])
-@crossdomain(origin='*')
+@app.route('/stop', methods=['POST', 'OPTIONS'])
+@crossdomain(origin='*', methods=['POST', 'OPTIONS'])
 def stop_trex():
     Trex.stop_traffic()
     return responsify('ok', 'stop')
 
 
 # Get TRex traffic status
-@app.route('/get_status', methods=['GET'])
-@crossdomain(origin='*')
+@app.route('/get_status', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*', methods=['GET', 'OPTIONS'])
 def get_status():
     status = Trex.is_running()
     stats = Trex.get_stats()
