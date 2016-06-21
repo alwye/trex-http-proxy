@@ -140,8 +140,10 @@ def stop_traffic():
     # graceful stop
     if client.is_connected():
         active_ports = client.get_active_ports()
-        if len(active_ports) == 0:
-            client.stop(client.get_active_ports())
+        pprint.pprint(active_ports)
+        pprint.pprint(len(active_ports))
+        if len(active_ports) > 0:
+            client.stop(active_ports)
         client.disconnect()
 
 
