@@ -9,6 +9,7 @@ Run the following command to install required [PyPi](https://pypi.python.org/pyp
 
 ```
 apt-get install python-dev
+apt-get install python-pip
 pip install -r requirements.txt
 ```
 
