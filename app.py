@@ -56,43 +56,49 @@ def api_version():
 
 # Start generating traffic
 @app.route('/start', methods=['POST', 'OPTIONS'])
-@crossdomain(origin='*', methods=['GET', 'OPTIONS'])
+@crossdomain(origin='*', methods=['POST', 'OPTIONS'])
 def start_trex():
-    if request.is_json:
-        req_data = request.get_json(cache=False)
-        if req_data is not None:
-            try:
-                traffic_config = {
-                    "pps": int(req_data['input']['pps'].encode("ascii")),
-                    "src_n": int(req_data['input']['src_n'].encode("ascii")),
-                    "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
-                    "mac_dest": req_data['input']['mac_dest'].encode("ascii")
-                }
-                if not Trex.is_running():
-                    try:
-                        thread.start_new_thread(start_traffic, (traffic_config,))
-                    except:
-                        return responsify('error', get_error_message('trex_not_start'))
-                    return responsify('ok', 'start')
-                else:
-                    return responsify('error', get_error_message('trex_already_running'))
+    if request.method == 'POST':
+        if request.is_json:
+            req_data = request.get_json(cache=False)
+            if req_data is not None:
+                try:
+                    traffic_config = {
+                        "pps": int(req_data['input']['pps'].encode("ascii")),
+                        "src_n": int(req_data['input']['src_n'].encode("ascii")),
+                        "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
+                        "mac_dest": req_data['input']['mac_dest'].encode("ascii")
+                    }
+                    if not Trex.is_running():
+                        try:
+                            thread.start_new_thread(start_traffic, (traffic_config,))
+                        except:
+                            return responsify('error', get_error_message('trex_not_start'))
+                        return responsify('ok', 'start')
+                    else:
+                        return responsify('error', get_error_message('trex_already_running'))
 
-            except (AttributeError, KeyError):
+                except (AttributeError, KeyError):
+                    return responsify('error', get_error_message('not_json'))
+                except ValueError:
+                    return responsify('error', get_error_message('ascii_error'))
+            else:
                 return responsify('error', get_error_message('not_json'))
-            except ValueError:
-                return responsify('error', get_error_message('ascii_error'))
         else:
             return responsify('error', get_error_message('not_json'))
     else:
-        return responsify('error', get_error_message('not_json'))
+        return responsify("ok", "ok")
 
 
 # Stop sending traffic
 @app.route('/stop', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*', methods=['POST', 'OPTIONS'])
 def stop_trex():
-    Trex.stop_traffic()
-    return responsify('ok', 'stop')
+    if request.method == 'POST':
+        Trex.stop_traffic()
+        return responsify('ok', 'stop')
+    else:
+        return responsify("ok", "ok")
 
 
 # Get TRex traffic status

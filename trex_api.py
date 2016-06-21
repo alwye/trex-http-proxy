@@ -143,7 +143,9 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n):
 def stop_traffic():
     # graceful stop
     if client.is_connected():
-        client.stop(client.get_active_ports())
+        active_ports = client.get_active_ports()
+        if len(active_ports) == 0:
+            client.stop(client.get_active_ports())
         client.disconnect()
 
 
