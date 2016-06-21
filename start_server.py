@@ -11,7 +11,7 @@ server_config = {
 # Web server function
 def main():
     print 'Starting TRex HTTP proxy on port: ', server_config['port']
-    http_server = WSGIServer(('', 5000), app)
+    http_server = WSGIServer(('', server_config['port']), app)
     http_server.serve_forever()
 
 
