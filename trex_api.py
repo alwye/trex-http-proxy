@@ -65,7 +65,7 @@ def create_stream(mac_dest, src_n, port_n=0):
     base_pkt = Ether(dst=mac_dest, src=mac_src)/IP(src="10.195.115.232", dst="10.195.115.234")/UDP(dport=12,sport=1025)
     pad = max(0, size - len(base_pkt)) * 'x'
 
-    min_mac_value = (src_n * port_n) + 1
+    min_mac_value = (src_n * port_n)
     max_mac_value = min_mac_value + src_n
 
     print min_mac_value, max_mac_value
