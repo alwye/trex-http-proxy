@@ -28,6 +28,11 @@ error = {
         'err_code': 'trex_already_running',
         'err_description': 'TRex is running already.',
         'err_resolution': 'Stop traffic, then try to start it again.'
+    },
+    'negative_pps': {
+        'err_code': 'negative_pps',
+        'err_description': 'PPS must have a positive value (>0).',
+        'err_resolution': 'Choose a positive value.'
     }
 }
 

@@ -69,14 +69,17 @@ def start_trex():
                         "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
                         "mac_dest": req_data['input']['mac_dest'].encode("ascii")
                     }
-                    if not Trex.is_running():
-                        try:
-                            thread.start_new_thread(start_traffic, (traffic_config,))
-                        except:
-                            return responsify('error', get_error_message('trex_not_start'))
-                        return responsify('ok', 'start')
+                    if traffic_config["pps"] > 0 and traffic_config["mac_dest"]:
+                        if not Trex.is_running():
+                            try:
+                                thread.start_new_thread(start_traffic, (traffic_config,))
+                            except:
+                                return responsify('error', get_error_message('trex_not_start'))
+                            return responsify('ok', 'start')
+                        else:
+                            return responsify('error', get_error_message('trex_already_running'))
                     else:
-                        return responsify('error', get_error_message('trex_already_running'))
+                        return responsify('error', get_error_message('negative_pps'))
 
                 except (AttributeError, KeyError):
                     return responsify('error', get_error_message('not_json'))
