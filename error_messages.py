@@ -29,10 +29,10 @@ error = {
         'err_description': 'TRex is running already.',
         'err_resolution': 'Stop traffic, then try to start it again.'
     },
-    'negative_pps': {
-        'err_code': 'negative_pps',
-        'err_description': 'PPS must have a positive value (>0).',
-        'err_resolution': 'Choose a positive value.'
+    'pps_must_be_positive': {
+        'err_code': 'pps_must_be_positive',
+        'err_description': 'PPS must have a positive value (>0). Traffic stopped.',
+        'err_resolution': 'Choose a positive value to start server.'
     }
 }
 

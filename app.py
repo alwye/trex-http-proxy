@@ -10,7 +10,7 @@ import pprint
 app = Flask(__name__)
 
 config = {
-    'api_version': 0.1,
+    'api_version': 0.1
 }
 
 
@@ -70,16 +70,21 @@ def start_trex():
                         "mac_dest": req_data['input']['mac_dest'].encode("ascii")
                     }
                     if traffic_config["pps"] > 0 and traffic_config["mac_dest"]:
+                        """If # of PPS or MAC addresses is positive"""
                         if not Trex.is_running():
                             try:
                                 thread.start_new_thread(start_traffic, (traffic_config,))
                             except:
+                                import traceback
+                                print "exception", traceback.format_exc()
                                 return responsify('error', get_error_message('trex_not_start'))
                             return responsify('ok', 'start')
                         else:
                             return responsify('error', get_error_message('trex_already_running'))
                     else:
-                        return responsify('error', get_error_message('negative_pps'))
+                        """Stop TRex if 0 PPS or MAC addresses received"""
+                        stop_trex(True)
+                        return responsify('error', get_error_message('pps_must_be_positive'))
 
                 except (AttributeError, KeyError):
                     return responsify('error', get_error_message('not_json'))
@@ -96,8 +101,8 @@ def start_trex():
 # Stop sending traffic
 @app.route('/stop', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*', methods=['POST', 'OPTIONS'])
-def stop_trex():
-    if request.method == 'POST':
+def stop_trex(force=False):
+    if request.method == 'POST' or force is True:
         Trex.stop_traffic()
         return responsify('ok', 'stop')
     else:
