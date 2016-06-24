@@ -1,11 +1,8 @@
 #!flask/bin/python
 from flask import Flask, jsonify, request
 from error_messages import get_error_message
-# import t_rex_stateless as Trex
 import trex_api as Trex
-import thread
 from cors_decorator import crossdomain
-import pprint
 
 app = Flask(__name__)
 
@@ -73,7 +70,7 @@ def start_trex():
                         """If # of PPS or MAC addresses is positive"""
                         if not Trex.is_running():
                             try:
-                                thread.start_new_thread(start_traffic, (traffic_config,))
+                                start_traffic(traffic_config)
                             except:
                                 import traceback
                                 print "exception", traceback.format_exc()

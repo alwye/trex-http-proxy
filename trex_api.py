@@ -41,14 +41,8 @@ Functionality:
 
 """
 
-
-import argparse
-import json
-import socket
-import string
-import struct
 import sys
-import pprint
+
 
 sys.path.insert(0, "trex_client/stl/")
 from trex_stl_lib.api import *
@@ -109,7 +103,6 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n):
     try:
 
         port_list = range(0, pkts_n)
-        pprint.pprint(port_list)
         rate = str(pps) + "pps"
 
         # connect to server
@@ -140,8 +133,6 @@ def stop_traffic():
     # graceful stop
     if client.is_connected():
         active_ports = client.get_active_ports()
-        pprint.pprint(active_ports)
-        pprint.pprint(len(active_ports))
         if len(active_ports) > 0:
             client.stop(active_ports)
         client.disconnect()
