@@ -67,6 +67,7 @@ def start_trex():
                         "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
                         "mac_dest": req_data['input']['mac_dest'].encode("ascii"),
                         "packet_size": int(req_data['input']['packet_size'].encode("ascii")),
+                        "mult": int(req_data['input']['mult'].encode("ascii")),
                     }
                     if traffic_config["pps"] > 0 and traffic_config["mac_dest"]:
                         """If # of PPS or MAC addresses is positive"""

@@ -86,7 +86,7 @@ def get_stats():
         return {}
 
 
-def start_traffic(pkts_n, duration, pps, mac_dest, src_n, packet_size):
+def start_traffic(pkts_n, duration, pps, mac_dest, src_n, packet_size, mult):
     """Run the traffic with specific parameters.
 
     :param pkts_n: Number of packets/ports
@@ -95,6 +95,7 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n, packet_size):
     :param mac_dest: destination MAC address
     :param src_n: NUmber of source MAC addresses
     :param packet_size: packet size in bits
+    :param mult: multiplier for pps
 
     :type pkts_n: int
     :type duration: int
@@ -106,7 +107,7 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n, packet_size):
     try:
 
         port_list = range(0, pkts_n)
-        rate = str(pps) + "pps"
+        rate = str(pps * mult) + "pps"
 
         # connect to server
         client.connect()
