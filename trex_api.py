@@ -65,7 +65,7 @@ def create_stream(mac_dest, src_n, packet_size=60, port_n=0):
     print min_mac_value, max_mac_value
 
     vm = STLScVmRaw(
-        [STLVmFlowVar(name="mac_src", min_value=min_mac_value, max_value=max_mac_value, size=2, op="inc"),
+        [STLVmFlowVar(name="mac_src", min_value=min_mac_value, max_value=max_mac_value, size=4, op="inc"),
          STLVmWrFlowVar(fv_name="mac_src", pkt_offset=10)  # write it to LSB of SRC
          ]
         )

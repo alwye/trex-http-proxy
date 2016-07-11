@@ -32,7 +32,8 @@ def start_traffic(traffic_config):
         pps=traffic_config['pps'],
         mac_dest=traffic_config['mac_dest'],
         src_n=traffic_config['src_n'],
-        packet_size=traffic_config['packet_size']
+        packet_size=traffic_config['packet_size'],
+        mult=traffic_config['mult']
     )
 
     return 0
