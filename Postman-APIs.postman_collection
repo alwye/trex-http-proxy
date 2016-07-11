@@ -104,12 +104,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1466106852265,
+			"time": 1468202407927,
 			"name": "start traffic",
 			"description": "",
 			"collectionId": "47e6092d-16fd-0d2a-f6c0-94075e55e1ad",
 			"responses": [],
-			"rawModeData": "{\n    \"input\": {\n        \"pps\": \"10000\",\n        \"src_n\": \"8000\",\n        \"mac_dest\": \"08:00:27:86:39:79\",\n        \"pkts_n\": \"2\"\n    }\n}"
+			"rawModeData": "{\n    \"input\": {\n        \"pps\": \"10000\",\n        \"src_n\": \"1000\",\n        \"mac_dest\": \"08:00:27:86:39:79\",\n        \"pkts_n\": \"1\",\n        \"packet_size\": \"60\"\n    }\n}"
 		},
 		{
 			"id": "d43088eb-0b2f-ce28-aebc-c0599fa21fe3",

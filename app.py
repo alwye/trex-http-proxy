@@ -31,7 +31,8 @@ def start_traffic(traffic_config):
         pkts_n=traffic_config['pkts_n'],
         pps=traffic_config['pps'],
         mac_dest=traffic_config['mac_dest'],
-        src_n=traffic_config['src_n']
+        src_n=traffic_config['src_n'],
+        packet_size=traffic_config['packet_size']
     )
 
     return 0
@@ -64,7 +65,8 @@ def start_trex():
                         "pps": int(req_data['input']['pps'].encode("ascii")),
                         "src_n": int(req_data['input']['src_n'].encode("ascii")),
                         "pkts_n": int(req_data['input']['pkts_n'].encode("ascii")),
-                        "mac_dest": req_data['input']['mac_dest'].encode("ascii")
+                        "mac_dest": req_data['input']['mac_dest'].encode("ascii"),
+                        "packet_size": int(req_data['input']['packet_size'].encode("ascii")),
                     }
                     if traffic_config["pps"] > 0 and traffic_config["mac_dest"]:
                         """If # of PPS or MAC addresses is positive"""

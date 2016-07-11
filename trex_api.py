@@ -51,13 +51,13 @@ from trex_stl_lib.api import *
 client = STLClient()
 
 
-def create_stream(mac_dest, src_n, port_n=0):
+def create_stream(mac_dest, src_n, packet_size=60, port_n=0):
     # create a base packet and pad it to size
-    size = 60  # no FCS
+    # size = 60  # no FCS
 
     mac_src = "00:00:dd:dd:ae:11"
     base_pkt = Ether(dst=mac_dest, src=mac_src)/IP(src="10.195.115.232", dst="10.195.115.234")/UDP(dport=12,sport=1025)
-    pad = max(0, size - len(base_pkt)) * 'x'
+    pad = max(0, packet_size - len(base_pkt)) * 'x'
 
     min_mac_value = (src_n * port_n)
     max_mac_value = min_mac_value + src_n
@@ -86,12 +86,15 @@ def get_stats():
         return {}
 
 
-def start_traffic(pkts_n, duration, pps, mac_dest, src_n):
+def start_traffic(pkts_n, duration, pps, mac_dest, src_n, packet_size):
     """Run the traffic with specific parameters.
 
     :param pkts_n: Number of packets/ports
     :param duration: Duration of traffic run in seconds (-1=infinite).
     :param pps: Rate of traffic run [percentage, pps, bps].
+    :param mac_dest: destination MAC address
+    :param src_n: NUmber of source MAC addresses
+    :param packet_size: packet size in bits
 
     :type pkts_n: int
     :type duration: int
@@ -114,7 +117,8 @@ def start_traffic(pkts_n, duration, pps, mac_dest, src_n):
         for idx in range(0, pkts_n):
             stream = create_stream(mac_dest=mac_dest,
                                    src_n=src_n,
-                                   port_n=idx)
+                                   port_n=idx,
+                                   packet_size=packet_size)
             client.add_streams(stream, ports=[idx])
             print "*** idx = ", idx
 
